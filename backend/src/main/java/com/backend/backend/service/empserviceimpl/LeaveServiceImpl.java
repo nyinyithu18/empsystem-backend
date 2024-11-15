@@ -60,8 +60,9 @@ public class LeaveServiceImpl implements LeaveService {
 	@Override
 	public void uploadFile(MultipartFile file) {
 
-		try (InputStream inputStream = file.getInputStream(); Workbook workbook = new XSSFWorkbook(inputStream)) {
+		try (InputStream inputStream = file.getInputStream();
 
+				Workbook workbook = new XSSFWorkbook(inputStream)) {
 			Sheet sheet = workbook.getSheetAt(0);
 			for (Row row : sheet) {
 				if (row.getRowNum() == 0) {
