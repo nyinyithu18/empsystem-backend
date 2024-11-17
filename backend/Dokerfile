@@ -5,7 +5,7 @@ FROM maven:3.8.4-openjdk-17-slim AS build
 
 # Copy Maven files for dependency resolution
 COPY ./backend/pom.xml .
-COPY ./backend.mvn ./backend.mvn
+COPY ./backend/.mvn ./backend/.mvn
 
 # Copy application source code
 COPY ./backend/src ./backend/src
