@@ -1,14 +1,15 @@
-# Use a multi-stage build to reduce the final image size
-
 # Build Stage
 FROM maven:3.8.4-openjdk-17-slim AS build
 
+# Set working directory inside the container for the build process
+WORKDIR /backend
+
 # Copy Maven files for dependency resolution
-COPY ./backend/pom.xml .
-COPY ./backend/.mvn ./backend/.mvn
+COPY ./backend/pom.xml ./pom.xml
+COPY ./backend/.mvn ./ .mvn
 
 # Copy application source code
-COPY ./backend/src ./backend/src
+COPY ./backend/src ./src
 
 # Build the application
 RUN mvn clean package -DskipTests
@@ -16,11 +17,11 @@ RUN mvn clean package -DskipTests
 # Run Stage
 FROM openjdk:17-jdk-slim
 
-# Set working directory inside the container
+# Set working directory inside the container for the runtime environment
 WORKDIR /backend
 
 # Copy the JAR file from the build stage
-COPY --from=build /backend/target/*.jar backend-0.0.1-SNAPSHOT.jar
+COPY --from=build /backend/target/*.jar /backend/backend-0.0.1-SNAPSHOT.jar
 
 # Expose the application's port
 EXPOSE 8080
